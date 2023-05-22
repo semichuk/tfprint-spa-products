@@ -1,0 +1,13 @@
+.show {
+    display: block;
+}
+
+.dropdown {
+    display: grid;
+    justify-items: center;
+    grid-template-rows: auto auto;
+}
+
+.dropdown-menu {
+    grid-row: 3 / 4;
+}
