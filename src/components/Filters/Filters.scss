@@ -3,5 +3,7 @@
 .header__filters{
     display: grid;
     grid-auto-flow: column;
+    justify-items: center;
+    align-items: center;
     column-gap: 20px;
 }

@@ -1,0 +1,40 @@
+version: '3.1'
+
+services:
+
+  # nginx:
+  #   image: nginx:latest
+  #   ports:
+  #     - 80:80
+  #   volumes:
+  #     - ./:/var/www/
+  #     - ./.docker/nginx/conf.d/:/etc/nginx/conf.d/
+  #   restart: always
+  #   container_name: container_nginx
+  #   depends_on:
+  #     - app
+    
+  
+  app:
+    image: php:apache
+    ports:
+      - 8080:80
+    volumes:
+      - ./public/:/var/www/
+    restart: always
+    container_name: container_app
+
+  db:
+    image: mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: 42
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      - PMA_ARBITRARY=1

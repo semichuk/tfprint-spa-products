@@ -1,5 +1,15 @@
 .range {
   position: relative;
+  justify-items: center;
+    align-items: center;
+  &__values {
+    justify-items: center;
+    align-items: center;
+    display: grid;
+    grid-auto-flow: column;
+    
+    padding: 10px;
+  }
 }
 .slider {
   position: relative;

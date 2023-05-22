@@ -13,9 +13,9 @@ const Range = ({ onMaxValue, onMinValue, minValue, maxValue, minRange, maxRange,
                 <div className="slider__track" />
                 <div className="slider__range" style={styleSliderRange}/>
             </div>
-            <div className='range__hand-input'>
-                <input type='number' value={minValue} onChange={onMinValue}/>
-                <input type='number' value={maxValue} onChange={onMaxValue}/>
+            <div className='range__values'>
+                <div>Min:{minValue}</div>
+                <div>Max:{maxValue}</div>
             </div>
 
         </div>
