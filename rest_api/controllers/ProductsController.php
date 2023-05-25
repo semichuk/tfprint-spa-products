@@ -1,21 +1,25 @@
 <?php
 
-class ProductsController {
-
+class ProductsController
+{
     
-    function getProducts(){
-        
+    function getProducts($pdo){
+        $req = $pdo->prepare('SELECT * FROM products ');
+        $req->execute();
+        while ($response = $req->fetch()) {
+            echo (json_encode($response));
+        }
     }
 
-    function createProduct(){
-
+    function createProduct()
+    {
     }
 
-    function deleteProduct(){
-
+    function deleteProduct()
+    {
     }
 
-    function changeProduct(){
-
+    function changeProduct()
+    {
     }
 }

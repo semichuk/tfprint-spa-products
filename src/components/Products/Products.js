@@ -1,8 +1,12 @@
+import { useEffect } from 'react';
+import Product from '../Product/Product.js'
 
-const Products = () => {
+const Products = ({serverAPI, onGetProducts}) => {
+    
+    let arrayProducts = [];
     return (
-        <div>
-            
+        <div className="products">
+            {arrayProducts}
         </div>
               
     );

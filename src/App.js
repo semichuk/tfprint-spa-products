@@ -1,12 +1,17 @@
 import Filters from './components/Filters/Filters.js';
-// import Products from './components/Products.js';
+import Products from './components/Products/Products.js';
 import Search from './components/Search/Search.js';
 import Range from './components/Range/Range.js';
 
+import getProducts from './requests/getProducts.js';
+
 import './App.scss';
+
 import { useState, useCallback, useEffect } from 'react';
 
 const App = () => {
+    const serverAPI = 'https://www.tfprint.ru/manager/products/';
+    const [products, setProducts] = useState([]);
     const [filters, setFilters] = useState([
         { id: 1, filter: 'category', show: false },
         { id: 2, filter: 'size', show: false },
@@ -46,6 +51,10 @@ const App = () => {
         setFilters(newFilters);
     };
 
+    const onGetProducts = (serverAPI) => {
+        const products = getProducts(serverAPI);
+        setProducts(products);
+    };
 
     useEffect(() => {
         const minPercent = getPercent(minValue);
@@ -71,10 +80,10 @@ const App = () => {
                         leftRange={leftRange}
                         widthRange={widthRange} />
                 </div>
-
             </header>
             <main>
-
+                <Products onGetProducts={onGetProducts}
+                    serverAPI={serverAPI}/>
             </main>
         </div>
     );
