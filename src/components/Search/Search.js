@@ -1,11 +1,11 @@
 import './Search.scss';
 import search from '../../assets/search.svg';
 
-const Search = () => {
+const Search = ({onSearch}) => {
     return (
         <div className="header__search">
-            <button className='btn btn-light'><img src={search}/></button>
-            <input className="form-control"></input>
+            <img src={search}/>
+            <input className="form-control" placeholder='Наименование товара' onChange={onSearch}></input>
         </div>
     );
 }

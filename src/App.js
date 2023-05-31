@@ -12,6 +12,7 @@ import { useState, useCallback, useEffect } from 'react';
 
 const App = () => {
     const serverAPI = 'https://tfprint.ru/rest_api_products/';
+    const [search, setSearch] = useState('');
     const [products, setProducts] = useState([]);
     // const [filters, setFilters] = useState([
     //     { id: 1, filter: 'Категория', show: false },
@@ -152,6 +153,10 @@ const App = () => {
             });
     };
 
+    const onSearch = (event) => {
+        setSearch(event.target.value);
+    }
+
     // const onGetCategories = (API) => {
     //     getProducts(API + 'categories')
     //         .then((data) => {
@@ -176,11 +181,20 @@ const App = () => {
         // onGetCategories(serverAPI);
     }, [])
 
+    const searchFilter = (products, str) => {
+        const filtred = products.filter((item) => {
+            if(item.name.indexOf(str) >= 0){
+                return item;
+            }
+        });
+        return filtred;
+    };
 
+    const filtredProducts = searchFilter(products, search);
     return (
         <div className='grid-global' >
             <header className='header'>
-                <Search />
+                <Search onSearch={onSearch}/>
                 <div className='header__filters'>
                     <Categories categories={categoriesСrutch}
                         onClickCategories={onClickCategories} />
@@ -199,7 +213,7 @@ const App = () => {
             <main className='grid-products'>
                 <Products onGetProducts={onGetProducts}
                     serverAPI={serverAPI}
-                    products={products}
+                    products={filtredProducts}
                 />
             </main>
         </div>
