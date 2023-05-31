@@ -7,11 +7,24 @@
     row-gap: 20px;
     width: 100%;
     grid-auto-flow: column;
+    position: fixed;
+    z-index: 10;
 }
 
+.grid-products {
+    margin-top: 100px;
+    padding-left: 10px;
+  padding-right: 10px;
+}
 .grid-global {
     display: grid;
     grid-template-rows: auto auto;
 }
 
-.header__filters {}
+.header__filters{
+    display: grid;
+    grid-auto-flow: column;
+    justify-items: center;
+    align-items: center;
+    column-gap: 20px;
+}

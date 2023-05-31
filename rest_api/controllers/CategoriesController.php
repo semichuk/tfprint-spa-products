@@ -1,19 +1,28 @@
 <?php
 
 class CategoriesController {
-    public function create_category(string $name, int $parent_category): void {
+    function create_category(string $name, int $parent_category){
 
     }
 
-    public function change_category(string $name): void {
+    function change_category(string $name){
 
     }
 
-    public function delete_category(int $id): void {
+    function delete_category(int $id){
 
     }
 
-    public function get_categories(){
+    function getCategories($pdo){
+        $data = array();
+        $id = 0;
+        $req = $pdo->prepare('SELECT * FROM product_categories ');
+        $req->execute();
+        while ($response = $req->fetch()) {
+            $data["$id"] = $response;
+            $id++;
+        }
 
+        echo json_encode(['result' => $data]);
     }
 }

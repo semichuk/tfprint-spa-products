@@ -14,8 +14,8 @@ const Range = ({ onMaxValue, onMinValue, minValue, maxValue, minRange, maxRange,
                 <div className="slider__range" style={styleSliderRange}/>
             </div>
             <div className='range__values'>
-                <div>Min:{minValue}</div>
-                <div>Max:{maxValue}</div>
+                <div>Мин.:{minValue+"₽"}</div>
+                <div>Макс.:{maxValue+"₽"}</div>
             </div>
 
         </div>
