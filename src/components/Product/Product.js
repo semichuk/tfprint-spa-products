@@ -13,14 +13,15 @@ const Product = ({ data }) => {
             </div>
             <div className='product__discription'>
                 <div>{name}</div>
-                <div>{"Цена: "+price}</div>
+                <div>{"Цена: " + price + "₽"}</div>
                 <div>{description}</div>
+
             </div>
             <div className='product__buttons'>
                 <button className='product__change-button'>Редактировать</button>
             </div>
         </div >
-              
+
     );
 }
 

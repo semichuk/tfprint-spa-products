@@ -14,6 +14,9 @@ const App = () => {
     const serverAPI = 'https://tfprint.ru/rest_api_products/';
     const [search, setSearch] = useState('');
     const [products, setProducts] = useState([]);
+    
+
+    
     // const [filters, setFilters] = useState([
     //     { id: 1, filter: 'Категория', show: false },
     //     { id: 2, filter: 'Размер', show: false },
@@ -104,12 +107,23 @@ const App = () => {
         "show": false
     })
     // const [categories, setCategories] = useState([]);
-    const [minValue, setMinValue] = useState(30);
-    const [maxValue, setMaxValue] = useState(70);
+    
+    
+
+    
+    
+
     const [minRange, setMinRange] = useState(0);
-    const [maxRange, setMaxRange] = useState(1000);
+    const [maxRange, setMaxRange] = useState(0);
+    const [minValue, setMinValue] = useState(0);
+    const [maxValue, setMaxValue] = useState(0);
     const [leftRange, setLeftRange] = useState(0);
     const [widthRange, setWidthRange] = useState(0);
+
+    
+
+    
+
     const onMinValue = (event) => {
         const value = Math.min(+event.target.value, maxValue - 1);
         setMinValue(value);
@@ -121,10 +135,7 @@ const App = () => {
         setMaxValue(value);
     };
 
-    const getPercent = useCallback(
-        (value) => Math.round(((value - minRange) / (maxRange - minRange)) * 100),
-        [minRange, maxRange]
-    );
+    
 
     // const onFilter = (id) => {
     //     const newFilters = filters.map((filter) => {
@@ -138,9 +149,66 @@ const App = () => {
     //     setFilters(newFilters);
     // };
     const onClickCategories = () => {
-        const newCategories = {...categoriesСrutch};
+        const newCategories = { ...categoriesСrutch };
         newCategories.show = !newCategories.show;
         setCrutch(newCategories);
+    };
+
+    
+
+    const onSearch = (event) => {
+        setSearch(event.target.value);
+    }
+
+
+    // const onGetCategories = (API) => {
+    //     getProducts(API + 'categories')
+    //         .then((data) => {
+    //             setCategories(data.result);
+    //         }).catch((e) => {
+
+    //             console.log("error" + e);
+    //         });
+    // };
+    
+
+
+    
+
+
+
+
+    const searchFilter = (products, str) => {
+        const filtred = products.filter((item) => {
+            if (item.name.indexOf(str) >= 0) {
+                return item;
+            }
+        });
+        return filtred;
+    };
+
+    const priceFilter = (products, min, max) => {
+        const filtered = products.filter((item) => {
+            if (item.price >= min && item.price <= max) {
+                return item;
+            }
+        });
+        return filtered;
+    }
+
+    const getPercent = useCallback(
+        (value) => Math.round(((value - minRange) / (maxRange - minRange)) * 100),
+        [minRange, maxRange]
+    );
+    const findMax = () => {
+        let max = 0;
+        products.forEach(element => {
+            if(Number(element.price) > max){
+                max = Number(element.price);
+                console.log(max);
+            }
+        });
+        return max;
     };
 
     const onGetProducts = (API) => {
@@ -152,21 +220,17 @@ const App = () => {
                 console.log("error" + e);
             });
     };
+    
+    useEffect(() => {
+        onGetProducts(serverAPI);
+        // onGetCategories(serverAPI);
+    },[]);
 
-    const onSearch = (event) => {
-        setSearch(event.target.value);
-    }
-
-    // const onGetCategories = (API) => {
-    //     getProducts(API + 'categories')
-    //         .then((data) => {
-    //             setCategories(data.result);
-    //         }).catch((e) => {
-
-    //             console.log("error" + e);
-    //         });
-    // };
-
+    useEffect(() => {
+        const max = findMax();
+        setMaxRange(max);
+        setMaxValue(max)
+    }, [products]);
 
 
     useEffect(() => {
@@ -176,25 +240,21 @@ const App = () => {
         setWidthRange(maxPercent - minPercent);
     }, [minValue, getPercent, maxValue]);
 
-    useEffect(() => {
-        onGetProducts(serverAPI);
-        // onGetCategories(serverAPI);
-    }, [])
 
-    const searchFilter = (products, str) => {
-        const filtred = products.filter((item) => {
-            if(item.name.indexOf(str) >= 0){
-                return item;
-            }
-        });
-        return filtred;
-    };
 
-    const filtredProducts = searchFilter(products, search);
+
+    
+
+    
+
+    
+
+    const filtredProducts = priceFilter(searchFilter(products, search), minValue, maxValue);
+
     return (
         <div className='grid-global' >
             <header className='header'>
-                <Search onSearch={onSearch}/>
+                <Search onSearch={onSearch} />
                 <div className='header__filters'>
                     <Categories categories={categoriesСrutch}
                         onClickCategories={onClickCategories} />

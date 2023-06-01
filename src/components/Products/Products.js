@@ -4,8 +4,8 @@ import './Products.scss';
 const Products = ({serverAPI, onGetProducts, products}) => {
     let arrayProducts = [];
 
-    products.forEach(element => {
-        const product = (<Product data={element}></Product> );
+    products.forEach(({id, ...data}) => {
+        const product = (<Product key={+id} data={data}></Product> );
         arrayProducts.push(product);
     });
 
