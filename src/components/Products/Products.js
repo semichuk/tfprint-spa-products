@@ -1,11 +1,11 @@
 import Product from '../Product/Product.js';
 import './Products.scss';
 
-const Products = ({serverAPI, onGetProducts, products}) => {
+const Products = ({onToggleModal, onGetProducts, products}) => {
     let arrayProducts = [];
 
     products.forEach(({id, ...data}) => {
-        const product = (<Product key={+id} data={data}></Product> );
+        const product = (<Product key={+id} data={data} onToggleModal={onToggleModal} onGetProducts={onGetProducts}></Product> );
         arrayProducts.push(product);
     });
 

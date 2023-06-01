@@ -3,6 +3,7 @@ import Categories from './components/СrutchCategories/Categories.js'
 import Products from './components/Products/Products.js';
 import Search from './components/Search/Search.js';
 import Range from './components/Range/Range.js';
+import ProductModal from './components/ProductModal/ProductModal.js';
 
 import getProducts from './requests/getProducts.js';
 
@@ -14,14 +15,17 @@ const App = () => {
     const serverAPI = 'https://tfprint.ru/rest_api_products/';
     const [search, setSearch] = useState('');
     const [products, setProducts] = useState([]);
-    
-
-    
+    const [showModal, setShowModal] = useState(false);
     // const [filters, setFilters] = useState([
     //     { id: 1, filter: 'Категория', show: false },
     //     { id: 2, filter: 'Размер', show: false },
     //     { id: 3, filter: 'Намотка', show: false }
     // ]);
+    const [desiredCategory, setDesiredCategory] = useState({
+        "id": "1",
+        "name": "Все продукты",
+        
+    });
     const [categoriesСrutch, setCrutch] = useState({
         "result":
             [{
@@ -107,22 +111,12 @@ const App = () => {
         "show": false
     })
     // const [categories, setCategories] = useState([]);
-    
-    
-
-    
-    
-
     const [minRange, setMinRange] = useState(0);
     const [maxRange, setMaxRange] = useState(0);
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(0);
     const [leftRange, setLeftRange] = useState(0);
     const [widthRange, setWidthRange] = useState(0);
-
-    
-
-    
 
     const onMinValue = (event) => {
         const value = Math.min(+event.target.value, maxValue - 1);
@@ -135,8 +129,6 @@ const App = () => {
         setMaxValue(value);
     };
 
-    
-
     // const onFilter = (id) => {
     //     const newFilters = filters.map((filter) => {
     //         if (filter.id === id) {
@@ -148,18 +140,24 @@ const App = () => {
     //     });
     //     setFilters(newFilters);
     // };
-    const onClickCategories = () => {
+
+    const onShowCategories = () => {
         const newCategories = { ...categoriesСrutch };
         newCategories.show = !newCategories.show;
         setCrutch(newCategories);
     };
 
-    
+    const onClickCategory = (id, name) => {
+        const newDesiredCategory = {
+            "id": id,
+            "name": name
+        };
+        setDesiredCategory(newDesiredCategory);
+    };
 
     const onSearch = (event) => {
         setSearch(event.target.value);
     }
-
 
     // const onGetCategories = (API) => {
     //     getProducts(API + 'categories')
@@ -171,16 +169,21 @@ const App = () => {
     //         });
     // };
     
-
-
-    
-
-
-
-
     const searchFilter = (products, str) => {
         const filtred = products.filter((item) => {
             if (item.name.indexOf(str) >= 0) {
+                return item;
+            }
+        });
+        return filtred;
+    };
+
+    const categoryFilter = (products, desiredCategory) => {
+        const filtred = products.filter((item) => {
+            if (+item.category_id === +desiredCategory.id) {
+                return item;
+            }
+            if(+desiredCategory.id === 1){
                 return item;
             }
         });
@@ -205,7 +208,6 @@ const App = () => {
         products.forEach(element => {
             if(Number(element.price) > max){
                 max = Number(element.price);
-                console.log(max);
             }
         });
         return max;
@@ -219,6 +221,10 @@ const App = () => {
 
                 console.log("error" + e);
             });
+    };
+
+    const onToggleModal = () => {
+        setShowModal(!showModal);
     };
     
     useEffect(() => {
@@ -240,16 +246,7 @@ const App = () => {
         setWidthRange(maxPercent - minPercent);
     }, [minValue, getPercent, maxValue]);
 
-
-
-
-    
-
-    
-
-    
-
-    const filtredProducts = priceFilter(searchFilter(products, search), minValue, maxValue);
+    const filtredProducts = categoryFilter(priceFilter(searchFilter(products, search), minValue, maxValue), desiredCategory);
 
     return (
         <div className='grid-global' >
@@ -257,7 +254,9 @@ const App = () => {
                 <Search onSearch={onSearch} />
                 <div className='header__filters'>
                     <Categories categories={categoriesСrutch}
-                        onClickCategories={onClickCategories} />
+                        onShowCategories={onShowCategories} 
+                        onClickCategory={onClickCategory}
+                        desiredCategory={desiredCategory}/>
                     {/* <Filters filters={filters}
                         onFilter={onFilter} /> */}
                     <Range onMaxValue={onMaxValue}
@@ -272,9 +271,10 @@ const App = () => {
             </header>
             <main className='grid-products'>
                 <Products onGetProducts={onGetProducts}
-                    serverAPI={serverAPI}
                     products={filtredProducts}
+                    onToggleModal={onToggleModal}
                 />
+                <ProductModal showModal={showModal} onToggleModal={onToggleModal}/>
             </main>
         </div>
     );

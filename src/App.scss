@@ -14,18 +14,31 @@
 .grid-products {
     margin-top: 100px;
     padding-left: 10px;
-  padding-right: 10px;
-  margin-bottom: 20px;
+    padding-right: 10px;
+    margin-bottom: 20px;
 }
+
 .grid-global {
     display: grid;
     grid-template-rows: auto auto;
 }
 
-.header__filters{
+.header__filters {
     display: grid;
     grid-auto-flow: column;
     justify-items: center;
     align-items: center;
     column-gap: 20px;
+}
+
+.show {
+    display: grid;
+}
+
+.hide {
+    display: none;
+}
+
+.scroll-stop {
+    overflow: hidden;
 }
