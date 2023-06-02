@@ -1,9 +1,10 @@
 import './Product.scss';
 
-const Product = ({ data, onGetProducts, onToggleModal}) => {
+const Product = ({ data, onGetProducts, onToggleModal, onRenderProductModal}) => {
     const name = data.name,
         price = data.price,
         description = data.description,
+        id = +data.id,
         image = data.image;
 
     return (
@@ -18,7 +19,7 @@ const Product = ({ data, onGetProducts, onToggleModal}) => {
 
             </div>
             <div className='product__buttons'>
-                <button className='product__change-button' onClick={onToggleModal}>Редактировать</button>
+                <button className='product__change-button' onClick={() => {onRenderProductModal(id);onToggleModal();}}>Редактировать</button>
             </div>
         </div >
 

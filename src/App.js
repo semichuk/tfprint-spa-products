@@ -26,6 +26,7 @@ const App = () => {
         "name": "Все продукты",
         
     });
+    const [productModal, setProductModal] = useState(-1);
     const [categoriesСrutch, setCrutch] = useState({
         "result":
             [{
@@ -146,7 +147,9 @@ const App = () => {
         newCategories.show = !newCategories.show;
         setCrutch(newCategories);
     };
-
+    const onRenderProductModal = (id) => {
+        setProductModal(id);
+    };
     const onClickCategory = (id, name) => {
         const newDesiredCategory = {
             "id": id,
@@ -232,6 +235,7 @@ const App = () => {
         // onGetCategories(serverAPI);
     },[]);
 
+
     useEffect(() => {
         const max = findMax();
         setMaxRange(max);
@@ -273,8 +277,9 @@ const App = () => {
                 <Products onGetProducts={onGetProducts}
                     products={filtredProducts}
                     onToggleModal={onToggleModal}
+                    onRenderProductModal={onRenderProductModal}
                 />
-                <ProductModal showModal={showModal} onToggleModal={onToggleModal}/>
+                <ProductModal products={products} productModal={productModal} showModal={showModal} onToggleModal={onToggleModal}/>
             </main>
         </div>
     );
