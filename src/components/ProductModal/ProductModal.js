@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ProductEditor from '../ProductEditor/ProductEditor.js';
 import './ProductModal.scss';
 
 const ProductModal = ({ showModal, onToggleModal, products, productModal }) => {
@@ -43,6 +44,10 @@ const ProductModal = ({ showModal, onToggleModal, products, productModal }) => {
     const onChangePublished = () => {
         setPublished(!published);
     };
+
+    const onChangeContent = (content) => {
+        setContent(content);
+    };
     
     let clazz = '';
     if (showModal === true) {
@@ -86,7 +91,7 @@ const ProductModal = ({ showModal, onToggleModal, products, productModal }) => {
 
                     </div>
                     <div className='product-modal__content'>
-                        <input type='text' value={content} name='content' />
+                        <ProductEditor onChange={onChangeContent} contentProduct={content}/>
                     </div>
                 </form>
             </div>
