@@ -2,8 +2,9 @@
 
 class ProductsController
 {
-    
-    function getProducts($pdo){
+
+    function getProducts($pdo)
+    {
         $data = array();
         $id = 0;
         $req = $pdo->prepare('SELECT * FROM products ');
@@ -14,7 +15,6 @@ class ProductsController
         }
 
         echo json_encode(['result' => $data]);
-
     }
 
 
@@ -30,7 +30,29 @@ class ProductsController
     {
     }
 
-    function changeProduct()
+    function changeProduct($pdo, $data, $id)
     {
+        if ((int)$data['id'] === (int)$id) {
+            $req = $pdo->prepare("UPDATE `products` SET `name`=:name, `price`=:price,`longtitle`=:longtitle,`description`=:description,`published`=:published,`content`=:content WHERE id=:id");
+            $req->execute($data);
+
+            http_response_code(200);
+            $response = [
+                "result" => true,
+                "message" => "product id={$data['id']} successfully updated",
+                "request_id" => $id,
+                "product_id"=>$data['id']
+            ];
+            echo json_encode($response);
+        } else {
+            http_response_code(400);
+            $response = [
+                "result" => false,
+                "message" => "product id={$data['id']} not updated",
+                "request_id" => $id,
+                "product_id"=>$data['id']
+            ];
+            echo json_encode($response);
+        }
     }
 }

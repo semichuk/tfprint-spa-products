@@ -5,8 +5,8 @@ require('./controllers/ProductsController.php');
 require('./controllers/CategoriesController.php');
 
 header('Access-Control-Allow-Origin: *');
-// header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS');
-// header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+header('Access-Control-Allow-Methods: GET,POST,PATCH,DELETE');
+header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
 header('Content-type: application/json');
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -23,6 +23,17 @@ if ($method === 'GET') {
     } else if ($type === 'categories') {
         $controller = new CategoriesController();
         $controller->getCategories($pdo);
+    }
+}
+
+if ($method === 'PATCH') {
+    if ($type === 'products') {
+        if (isset($id)){
+            $data = json_decode(file_get_contents('php://input'), true);
+            $controller = new ProductsController();
+            $controller->changeProduct($pdo, $data, $id);
+        }
+        
     }
 }
 // else if ($method === 'POST'){

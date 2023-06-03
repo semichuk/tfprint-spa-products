@@ -279,7 +279,12 @@ const App = () => {
                     onToggleModal={onToggleModal}
                     onRenderProductModal={onRenderProductModal}
                 />
-                <ProductModal products={products} productModal={productModal} showModal={showModal} onToggleModal={onToggleModal}/>
+                <ProductModal products={products}
+                    productModal={productModal}
+                    showModal={showModal} 
+                    onToggleModal={onToggleModal}
+                    onGetProducts={onGetProducts}
+                    serverAPI={serverAPI}/>
             </main>
         </div>
     );

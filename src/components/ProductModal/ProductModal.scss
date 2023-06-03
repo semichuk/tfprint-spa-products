@@ -59,6 +59,8 @@
         grid-column: 1 / 3;
         display: grid;
         grid-template-columns: 1fr 3fr;
+        column-gap: 10px;
+
     }
 
     &__information {
@@ -67,12 +69,22 @@
     }
 
     &__content {
-
+        display: grid;
+        row-gap: 10px;
     }
 
     &__img {
         border-radius: 15px;
         max-width: 100px;
         max-height: 100px;
+    }
+
+    &__status-submit {
+        display: grid;
+        grid-template-columns: 2fr 7fr;
+        column-gap: 10px;
+        .badge {
+            text-align: center;
+        }
     }
 }

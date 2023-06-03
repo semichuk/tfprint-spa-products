@@ -1,4 +1,4 @@
-// App.jsx / App.tsx
+import './ProductEditor.scss';
 
 import { useState, useEffect } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -26,14 +26,11 @@ const ProductEditor = ({ contentProduct, onChange}) => {
                 data={content}
                 onReady={editor => {
                     // You can store the "editor" and use when it is needed.
-                    console.log('Editor is ready to use!', editor);
                 }}
                 onChange={onChangeContent}
                 onBlur={(event, editor) => {
-                    console.log('Blur.', editor);
                 }}
                 onFocus={(event, editor) => {
-                    console.log('Focus.', editor);
                 }}
             />
         </div>
