@@ -3,10 +3,11 @@
     padding: 15px;
     justify-items: center;
     display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
     background-color: white;
     row-gap: 20px;
     width: 100%;
-    grid-auto-flow: column;
     position: fixed;
     z-index: 5;
 }

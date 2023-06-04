@@ -13,7 +13,6 @@ const ProductEditor = ({ contentProduct, onChange}) => {
 
     const onChangeContent = (event, editor) => {
         const data = editor.getData();
-        console.log({ event, editor, data });
         setContent(data);
         onChange(data);
     };

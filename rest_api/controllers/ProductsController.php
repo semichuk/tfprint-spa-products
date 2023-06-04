@@ -33,7 +33,7 @@ class ProductsController
     function changeProduct($pdo, $data, $id)
     {
         if ((int)$data['id'] === (int)$id) {
-            $req = $pdo->prepare("UPDATE `products` SET `name`=:name, `price`=:price,`longtitle`=:longtitle,`description`=:description,`published`=:published,`content`=:content WHERE id=:id");
+            $req = $pdo->prepare("UPDATE `products` SET `name`=:name, `price`=:price, `image`=:image, `longtitle`=:longtitle,`description`=:description,`published`=:published,`content`=:content WHERE id=:id");
             $req->execute($data);
 
             http_response_code(200);

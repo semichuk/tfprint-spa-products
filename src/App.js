@@ -24,7 +24,7 @@ const App = () => {
     const [desiredCategory, setDesiredCategory] = useState({
         "id": "1",
         "name": "Все продукты",
-        
+
     });
     const [productModal, setProductModal] = useState(-1);
     const [categoriesСrutch, setCrutch] = useState({
@@ -171,7 +171,7 @@ const App = () => {
     //             console.log("error" + e);
     //         });
     // };
-    
+
     const searchFilter = (products, str) => {
         const filtred = products.filter((item) => {
             if (item.name.indexOf(str) >= 0) {
@@ -186,7 +186,7 @@ const App = () => {
             if (+item.category_id === +desiredCategory.id) {
                 return item;
             }
-            if(+desiredCategory.id === 1){
+            if (+desiredCategory.id === 1) {
                 return item;
             }
         });
@@ -209,7 +209,7 @@ const App = () => {
     const findMax = () => {
         let max = 0;
         products.forEach(element => {
-            if(Number(element.price) > max){
+            if (Number(element.price) > max) {
                 max = Number(element.price);
             }
         });
@@ -229,11 +229,11 @@ const App = () => {
     const onToggleModal = () => {
         setShowModal(!showModal);
     };
-    
+
     useEffect(() => {
         onGetProducts(serverAPI);
         // onGetCategories(serverAPI);
-    },[]);
+    }, []);
 
 
     useEffect(() => {
@@ -255,12 +255,15 @@ const App = () => {
     return (
         <div className='grid-global' >
             <header className='header'>
-                <Search onSearch={onSearch} />
+                <div className='header__toolbar'>
+                    <button className='header__creater-product btn btn-outline-primary '>Создать товар</button>
+                </div>
                 <div className='header__filters'>
+                    <Search onSearch={onSearch} />
                     <Categories categories={categoriesСrutch}
-                        onShowCategories={onShowCategories} 
+                        onShowCategories={onShowCategories}
                         onClickCategory={onClickCategory}
-                        desiredCategory={desiredCategory}/>
+                        desiredCategory={desiredCategory} />
                     {/* <Filters filters={filters}
                         onFilter={onFilter} /> */}
                     <Range onMaxValue={onMaxValue}
@@ -281,10 +284,10 @@ const App = () => {
                 />
                 <ProductModal products={products}
                     productModal={productModal}
-                    showModal={showModal} 
+                    showModal={showModal}
                     onToggleModal={onToggleModal}
                     onGetProducts={onGetProducts}
-                    serverAPI={serverAPI}/>
+                    serverAPI={serverAPI} />
             </main>
         </div>
     );

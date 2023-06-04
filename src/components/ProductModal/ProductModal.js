@@ -11,10 +11,11 @@ const ProductModal = ({ showModal, onToggleModal, products, productModal, onGetP
         [description, setDescription] = useState(''),
         [published, setPublished] = useState(-1),
         [img, setImg] = useState(''),
+        [listImg, setListImg] = useState([]),
         [content, setContent] = useState(''),
         [badge, setBadge] = useState({
             "status": "Нет статуса",
-            "class": "bg-secondary"
+            "class": " rounded-pill bg-secondary"
         });
 
     useEffect(() => {
@@ -36,13 +37,27 @@ const ProductModal = ({ showModal, onToggleModal, products, productModal, onGetP
                     setContent(item.content);
                     setBadge({
                         "status": "Нет статуса",
-                        "class": "bg-secondary"
+                        "class": " rounded-pill bg-secondary"
                     });
                 }
             });
         }
 
-    }, [products, productModal])
+    }, [products, productModal]);
+
+    const onChangeListImg = (event) => {
+        setImg(event.target.value);
+    };
+
+    useEffect(() => {
+        // onChange={() => {setImg(item.image);}}
+        const array = products.map(item => {
+            return (
+                <option  value={item.image}>{item.image}</option>
+            )
+        });
+        setListImg(array);
+    }, [products]);
 
     const onChangePrice = (event) => {
         if (event.target.value === '') {
@@ -67,6 +82,7 @@ const ProductModal = ({ showModal, onToggleModal, products, productModal, onGetP
                 "id": productId,
                 "name": name,
                 "price": price,
+                "image": img,
                 "longtitle": longtitle,
                 "description": description,
                 "published": published ? 1 : 0,
@@ -77,13 +93,13 @@ const ProductModal = ({ showModal, onToggleModal, products, productModal, onGetP
             await onGetProducts(serverAPI);
             setBadge({
                 "status": "Успешно сохранено",
-                "class": "bg-success"
+                "class": " rounded-pill bg-success"
             })
         } catch (error) {
             console.log(error);
             setBadge({
                 "status": "Ошибка сохранения",
-                "class": "bg-danger"
+                "class": " rounded-pill bg-danger"
             })
         }
 
@@ -102,28 +118,29 @@ const ProductModal = ({ showModal, onToggleModal, products, productModal, onGetP
                 <div className='product-modal__close' onClick={onToggleModal}>×</div>
                 <form className='product-modal__form'>
                     <div className='product-modal__information'>
-                        <img className='product-modal__img' src={"https://www.tfprint.ru/" + img} alt=''></img>
-
+                        <label >Изображение товара</label>
+                        <div className='form-group'>
+                            <img id='forImg' className='product-modal__img' src={"https://www.tfprint.ru/" + img} alt=''></img>
+                            <select onChange={onChangeListImg} name='list-img' className='product-modal__list-img form-select'>
+                                {listImg}
+                            </select>
+                        </div>
                         <div className='form-group'>
                             <label for='formName'>Наименование товара</label>
                             <input className='form-control' type='text' id='formName' value={name} name='name' onChange={(event) => { setName(event.target.value) }}></input>
                         </div>
-                        <br />
                         <div className='form-group'>
                             <label for='formName'>Цена(₽)</label>
                             <input className='form-control' type='number' value={price} name='price' onChange={onChangePrice} />
                         </div>
-                        <br />
                         <div className='form-group'>
                             <label for='formName'>Длинное название</label>
                             <input className='form-control' type='text' value={longtitle} name='longtitle' onChange={(event) => { setLongtitle(event.target.value) }} />
                         </div>
-                        <br />
                         <div className='form-group'>
                             <label for='formName'>Описание</label>
                             <input className='form-control' type='text' value={description} name='description' onChange={(event) => { setDescription(event.target.value) }} />
                         </div>
-                        <br />
                         <div className='form-group'>
                             <label for='formName'>Опубликованно</label>
                             <input type='checkbox' checked={published} name='published' onChange={onChangePublished} />
