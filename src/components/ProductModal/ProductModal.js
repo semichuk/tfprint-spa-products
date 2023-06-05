@@ -3,7 +3,7 @@ import ProductEditor from '../ProductEditor/ProductEditor.js';
 import updateProduct from '../../requests/updateProduct.js';
 import './ProductModal.scss';
 
-const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetProducts, serverAPI }) => {
+const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetProducts, serverAPI, onDeleteModal }) => {
     const [productId, setProductId] = useState(-1),
         [name, setName] = useState(''),
         [price, setPrice] = useState(-1),
@@ -105,6 +105,11 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
 
     }
 
+    const onDeleteProduct = (event) => {
+        event.preventDefault();
+        onDeleteModal(productId, name);
+    };
+
     let clazz = '';
     if (showModal.show === true && showModal.status === "change") {
         clazz = ' show ';
@@ -149,9 +154,11 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
                     </div>
                     <div className='product-modal__content'>
                         <ProductEditor onChange={onChangeContent} contentProduct={content} />
-                        <div className='product-modal__status-submit'>
+                        <div className='product-modal__status-submit-delete'>
                             <div className={"badge " + badge.class}>{badge.status}</div>
                             <button type="submit" className="btn btn-outline-primary" onClick={onFormSubmit}>Сохранить изменения</button>
+                            <button type="submit" className="btn btn-outline-danger" onClick={onDeleteProduct}>Удалить товар</button>
+
                         </div>
                     </div>
                 </form>

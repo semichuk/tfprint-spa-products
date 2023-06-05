@@ -5,6 +5,7 @@ import Search from './components/Search/Search.js';
 import Range from './components/Range/Range.js';
 import ProductModal from './components/ProductModal/ProductModal.js';
 import ProductMaker from './components/ProductMaker/ProductMaker.js';
+import DeleteProductModal from './components/DeleteProductModal/DeleteProductModal.js';
 
 import getProducts from './requests/getProducts.js';
 
@@ -16,6 +17,11 @@ const App = () => {
     const serverAPI = 'https://tfprint.ru/rest_api_products/';
     const [search, setSearch] = useState('');
     const [products, setProducts] = useState([]);
+    const [deleteProductObj, setDeleteProduct] = useState({
+        "id": -1,
+        "name": "Product",
+
+    });
     const [showModal, setShowModal] = useState({ "status": "", "show":false});
     // const [filters, setFilters] = useState([
     //     { id: 1, filter: 'Категория', show: false },
@@ -240,6 +246,15 @@ const App = () => {
 
     };
 
+    const onDeleteModal = (id, name) => {
+        setDeleteProduct({
+            "id": id,
+            "name": name,
+    
+        })
+        setShowModal({ "status": "delete", "show":true});
+    };
+
     useEffect(() => {
         onGetProducts(serverAPI);
         // onGetCategories(serverAPI);
@@ -297,13 +312,22 @@ const App = () => {
                     showModal={showModal}
                     onCloseModal={onCloseModal}
                     onGetProducts={onGetProducts}
-                    serverAPI={serverAPI} />
+                    serverAPI={serverAPI} 
+                    onDeleteModal={onDeleteModal}/>
+                    
                 <ProductMaker products={products}
                     showModal={showModal}
                     onCloseModal={onCloseModal}
                     onGetProducts={onGetProducts}
                     serverAPI={serverAPI} 
                     categoriesСrutch={categoriesСrutch}/>
+                <DeleteProductModal 
+                    showModal={showModal}
+                    onCloseModal={onCloseModal}
+                    serverAPI={serverAPI}
+                    onChangeModal={onChangeModal}
+                    deleteProductObj={deleteProductObj}
+                    onGetProducts={onGetProducts}/>
                 
             </main>
         </div>

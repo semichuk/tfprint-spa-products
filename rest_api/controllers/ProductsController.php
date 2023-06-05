@@ -49,8 +49,30 @@ class ProductsController
         }
     }
 
-    function deleteProduct()
+    function deleteProduct($pdo, $data, $id)
     {
+        if ((int)$data['id'] === (int)$id) {
+            $req = $pdo->prepare("DELETE FROM `products` WHERE id=:id");
+            $req->execute($data);
+
+            http_response_code(200);
+            $response = [
+                "result" => true,
+                "message" => "product id={$data['id']} successfully deleted",
+                "request_id" => $id,
+                "product_id" => $data['id']
+            ];
+            echo json_encode($response);
+        } else {
+            http_response_code(400);
+            $response = [
+                "result" => false,
+                "message" => "product id={$data['id']} not deleted",
+                "request_id" => $id,
+                "product_id" => $data['id']
+            ];
+            echo json_encode($response);
+        }
     }
 
     function changeProduct($pdo, $data, $id)

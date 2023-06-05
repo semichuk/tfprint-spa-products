@@ -46,3 +46,12 @@ if ($method === 'POST'){
             
     }
 }
+if ($method === 'DELETE'){
+    if ($type === 'products') {
+        if (isset($id)){
+            $data = json_decode(file_get_contents('php://input'), true);
+            $controller = new ProductsController();
+            $controller->deleteProduct($pdo, $data, $id);
+        } 
+    }
+}
