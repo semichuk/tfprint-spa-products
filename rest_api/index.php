@@ -36,8 +36,13 @@ if ($method === 'PATCH') {
         
     }
 }
-// else if ($method === 'POST'){
-//     if ($type === 'products') {
-//         $controller->createProduct($pdo, );
-//     }
-// }
+if ($method === 'POST'){
+    if ($type === 'products') {
+
+            $data = json_decode(file_get_contents('php://input'), true);
+            $controller = new ProductsController();
+            $controller->createProduct($pdo, $data);
+
+            
+    }
+}

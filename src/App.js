@@ -4,6 +4,7 @@ import Products from './components/Products/Products.js';
 import Search from './components/Search/Search.js';
 import Range from './components/Range/Range.js';
 import ProductModal from './components/ProductModal/ProductModal.js';
+import ProductMaker from './components/ProductMaker/ProductMaker.js';
 
 import getProducts from './requests/getProducts.js';
 
@@ -15,7 +16,7 @@ const App = () => {
     const serverAPI = 'https://tfprint.ru/rest_api_products/';
     const [search, setSearch] = useState('');
     const [products, setProducts] = useState([]);
-    const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState({ "status": "", "show":false});
     // const [filters, setFilters] = useState([
     //     { id: 1, filter: 'Категория', show: false },
     //     { id: 2, filter: 'Размер', show: false },
@@ -226,8 +227,17 @@ const App = () => {
             });
     };
 
-    const onToggleModal = () => {
-        setShowModal(!showModal);
+    const onChangeModal = () => {
+        setShowModal({ "status": "change", "show":true});
+    };
+
+    const onSaveModal = () => {
+        setShowModal({ "status": "save", "show":true});
+    };
+
+    const onCloseModal = ( ) => {
+        setShowModal({ "status": "", "show":false});
+
     };
 
     useEffect(() => {
@@ -256,7 +266,7 @@ const App = () => {
         <div className='grid-global' >
             <header className='header'>
                 <div className='header__toolbar'>
-                    <button className='header__creater-product btn btn-outline-primary '>Создать товар</button>
+                    <button className='header__creater-product btn btn-outline-primary ' onClick={onSaveModal}>Создать товар</button>
                 </div>
                 <div className='header__filters'>
                     <Search onSearch={onSearch} />
@@ -279,15 +289,22 @@ const App = () => {
             <main className='grid-products'>
                 <Products onGetProducts={onGetProducts}
                     products={filtredProducts}
-                    onToggleModal={onToggleModal}
+                    onChangeModal={onChangeModal}
                     onRenderProductModal={onRenderProductModal}
                 />
                 <ProductModal products={products}
                     productModal={productModal}
                     showModal={showModal}
-                    onToggleModal={onToggleModal}
+                    onCloseModal={onCloseModal}
                     onGetProducts={onGetProducts}
                     serverAPI={serverAPI} />
+                <ProductMaker products={products}
+                    showModal={showModal}
+                    onCloseModal={onCloseModal}
+                    onGetProducts={onGetProducts}
+                    serverAPI={serverAPI} 
+                    categoriesСrutch={categoriesСrutch}/>
+                
             </main>
         </div>
     );

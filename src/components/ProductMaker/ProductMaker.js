@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import ProductEditor from '../ProductEditor/ProductEditor.js';
-import updateProduct from '../../requests/updateProduct.js';
-import './ProductModal.scss';
+import createProduct from '../../requests/createProduct.js';
+import './ProductMaker.scss';
 
-const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetProducts, serverAPI }) => {
+const ProductMaker = ({ showModal, onCloseModal, products, onGetProducts, serverAPI, categoriesСrutch }) => {
     const [productId, setProductId] = useState(-1),
         [name, setName] = useState(''),
-        [price, setPrice] = useState(-1),
+        [price, setPrice] = useState(0),
         [longtitle, setLongtitle] = useState(''),
         [description, setDescription] = useState(''),
-        [published, setPublished] = useState(-1),
+        [category, setCategory] = useState(0),
+        [listCategory, setListCategory] = useState([]),
+        [published, setPublished] = useState(false),
         [img, setImg] = useState(''),
         [listImg, setListImg] = useState([]),
         [content, setContent] = useState(''),
@@ -18,46 +20,39 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
             "class": " rounded-pill bg-secondary"
         });
     
-    useEffect(() => {
-        if (productModal > -1) {
-            products.forEach(item => {
-                if (+item.id === productModal) {
-                    setProductId(+item.id);
-                    setName(item.name);
-                    // category_id = +item.category_id;
-                    setPrice(+item.price);
-                    setLongtitle(item.longtitle);
-                    setDescription(item.description);
-                    if (+item.published === 1) {
-                        setPublished(true);
-                    } else if (+item.published === 0) {
-                        setPublished(false);
-                    }
-                    setImg(item.image);
-                    setContent(item.content);
-                    setBadge({
-                        "status": "Нет статуса",
-                        "class": " rounded-pill bg-secondary"
-                    });
-                }
+        useEffect(() => {
+            setBadge({
+                "status": "Нет статуса",
+                "class": " rounded-pill bg-secondary"
             });
-        }
-
-    }, [products, productModal]);
+        },[products]);
 
     const onChangeListImg = (event) => {
         setImg(event.target.value);
+    };
+
+    const onChangeListCategory = (event) => {
+        setCategory(+event.target.value);
     };
 
     useEffect(() => {
         // onChange={() => {setImg(item.image);}}
         const array = products.map(item => {
             return (
-                <option key={item.id}   value={item.image}>{item.image}</option>
+                <option key={item.id}  value={item.image}>{item.image}</option>
             )
         });
         setListImg(array);
     }, [products]);
+    useEffect(() => {
+        // onChange={() => {setImg(item.image);}}
+        const array = categoriesСrutch.result.map(item => {
+            return (
+                <option  key={item.id} value={+item.id}>{item.name}</option>
+            )
+        });
+        setListCategory(array);
+    }, [categoriesСrutch]);
 
     const onChangePrice = (event) => {
         if (event.target.value === '') {
@@ -78,15 +73,18 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
     const onFormSubmit = async (event) => {
         try {
             event.preventDefault();
-            await updateProduct(serverAPI + "products/" + productId, {
+            await createProduct(serverAPI + "products", {
                 "name": name,
+                "category": category,
+                "parent":9999,
                 "price": price,
-                "image": img,
                 "longtitle": longtitle,
-                "id": productId,
                 "description": description,
+                "alias": "alias",
                 "published": published ? 1 : 0,
-                "content": content
+                "content": content,
+                "image": img
+
             }).then((result) => {
                 console.log(result);
             })
@@ -106,7 +104,7 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
     }
 
     let clazz = '';
-    if (showModal.show === true && showModal.status === "change") {
+    if (showModal.show === true && showModal.status === "save") {
         clazz = ' show ';
     } else {
         clazz = ' hide ';
@@ -114,7 +112,7 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
     return (
         <div className={'product-modal ' + clazz} >
             <div className='product-modal__modal'>
-                <h3 className='product-modal__title'>Редактирование товара</h3>
+                <h3 className='product-modal__title'>Создание товара</h3>
                 <div className='product-modal__close' onClick={onCloseModal}>×</div>
                 <form className='product-modal__form'>
                     <div className='product-modal__information'>
@@ -142,6 +140,12 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
                             <input className='form-control' type='text' value={description} name='description' onChange={(event) => { setDescription(event.target.value) }} />
                         </div>
                         <div className='form-group'>
+                            <label for='formName'>Категория</label>
+                            <select onChange={onChangeListCategory} name='list-categories' className=' form-select'>
+                                {listCategory}
+                            </select>
+                        </div>
+                        <div className='form-group'>
                             <label for='formName'>Опубликованно</label>
                             <input type='checkbox' checked={published} name='published' onChange={onChangePublished} />
                         </div>
@@ -151,7 +155,7 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
                         <ProductEditor onChange={onChangeContent} contentProduct={content} />
                         <div className='product-modal__status-submit'>
                             <div className={"badge " + badge.class}>{badge.status}</div>
-                            <button type="submit" className="btn btn-outline-primary" onClick={onFormSubmit}>Сохранить изменения</button>
+                            <button type="submit" className="btn btn-outline-primary" onClick={onFormSubmit}>Создать товар</button>
                         </div>
                     </div>
                 </form>
@@ -163,4 +167,4 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
     );
 };
 
-export default ProductModal;
+export default ProductMaker;

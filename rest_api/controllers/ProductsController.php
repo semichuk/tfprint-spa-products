@@ -18,13 +18,36 @@ class ProductsController
     }
 
 
-    // function createProduct($pdo, $data)
-    // {
-    //     $req = $pdo->prepare("INSERT INTO products ('id', 'name', 'category_id', 'parent', 'price', 'longtitle', 'description', 'alias', 'published', 'content', 'image') VALUES (NULL, '', '', '0', '', '', '', '', '0', NULL, '0', NULL, '')");
+    function createProduct($pdo, $data)
+    {
+        try {
+            $req = $pdo->prepare("INSERT INTO products ( name, category_id, parent, price, longtitle, description, alias, published, content, image) 
+                                            VALUES ( :name, :category, :parent, :price, :longtitle, :description, :alias, :published, :content, :image)");
 
 
+            // foreach ($data as $key => $value) {
+            //     $req->bindValue($key , $value);
+            // }
+            $req->execute($data);
 
-    // }
+            http_response_code(201);
+            $id = -1;
+            $id = $pdo->lastInsertId();
+            $response = [
+                "result" => true,
+                "message" => "product id={$id} name={$data['name']} successfully created"
+            ];
+            echo json_encode($response);
+        } catch (Exception $th) {
+            http_response_code(500);
+            $response = [
+                "result" => false,
+                "message" => "product not created",
+                "error" => $th
+            ];
+            echo json_encode($response);
+        }
+    }
 
     function deleteProduct()
     {
@@ -41,7 +64,7 @@ class ProductsController
                 "result" => true,
                 "message" => "product id={$data['id']} successfully updated",
                 "request_id" => $id,
-                "product_id"=>$data['id']
+                "product_id" => $data['id']
             ];
             echo json_encode($response);
         } else {
@@ -50,7 +73,7 @@ class ProductsController
                 "result" => false,
                 "message" => "product id={$data['id']} not updated",
                 "request_id" => $id,
-                "product_id"=>$data['id']
+                "product_id" => $data['id']
             ];
             echo json_encode($response);
         }

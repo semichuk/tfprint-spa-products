@@ -1,6 +1,6 @@
 import './Product.scss';
 
-const Product = ({ data, onGetProducts, onToggleModal, onRenderProductModal}) => {
+const Product = ({ data, onGetProducts, onChangeModal, onRenderProductModal}) => {
     const name = data.name,
         price = data.price,
         description = data.description,
@@ -19,7 +19,7 @@ const Product = ({ data, onGetProducts, onToggleModal, onRenderProductModal}) =>
 
             </div>
             <div className='product__buttons'>
-                <button className='product__change-button' onClick={() => {onRenderProductModal(id);onToggleModal();}}>Редактировать</button>
+                <button className='product__change-button' onClick={() => {onRenderProductModal(id);onChangeModal();}}>Редактировать</button>
             </div>
         </div >
 
