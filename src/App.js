@@ -14,7 +14,7 @@ import './App.scss';
 import { useState, useCallback, useEffect } from 'react';
 
 const App = () => {
-    const serverAPI = 'https://tfprint.ru/rest_api_products/';
+    const serverAPI = 'https://tfprint.ru/rest_api_products/rest_api/';
     const [search, setSearch] = useState('');
     const [products, setProducts] = useState([]);
     const [deleteProductObj, setDeleteProduct] = useState({
