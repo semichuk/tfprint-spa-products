@@ -5,24 +5,73 @@ class ProductsController
 
     function getProducts($pdo)
     {
-        $data = array();
-        $id = 0;
-        $req = $pdo->prepare('SELECT * FROM products ');
-        $req->execute();
-        while ($response = $req->fetch()) {
-            $data["$id"] = $response;
-            $id++;
+        $data = [];
+
+        $Categoryes = [24, 25, 48, 53, 39, 197, 202, 205, 206];
+        foreach ($Categoryes as $category) {
+            ///////////////get other values/////////////
+            $request = $pdo->prepare('SELECT * FROM tfprint_site_content WHERE parent = :parent  AND is_product = 1');
+            $request->execute([
+                'parent' => $category
+            ]);
+            while ($response = $request->fetch()) {
+                $array = [
+                    "id" => $response['id'],
+                    "name" => $response['pagetitle'],
+                    "published" => $response['published'],
+                    "description" => $response['description'],
+                    "longtitle" => $response['longtitle'],
+                    "alias" => $response['alias'],
+                    "content" => $response['content'],
+                    "parent" => $category
+                ];
+                $id = $response['id'];
+                ////////////////get price/////////////
+                $req = $pdo->prepare('SELECT value FROM tfprint_site_tmplvar_contentvalues WHERE contentid = :contentid AND tmplvarid = :tmplvarid');
+                $req->execute([
+                    'contentid' => $id,
+                    'tmplvarid' => 1
+                ]);
+                $res = $req->fetch();
+                $price = $res['value'];
+                ////////////////get image////////////
+                $req = $pdo->prepare('SELECT value FROM tfprint_site_tmplvar_contentvalues WHERE contentid = :contentid AND tmplvarid = :tmplvarid');
+                $req->execute([
+                    'contentid' => $id,
+                    'tmplvarid' => 2
+                ]);
+                $resImg = $req->fetch();
+                $image = $resImg['value'];
+
+                $array['price'] = $price;
+                $array['image'] = $image;
+                $data[] = $array;
+
+            }
+
+
+
         }
 
         echo json_encode(['result' => $data]);
+        // $data = array();
+        // $id = 0;
+        // $req = $pdo->prepare('SELECT * FROM products ');
+        // $req->execute();
+        // while ($response = $req->fetch()) {
+        //     $data["$id"] = $response;
+        //     $id++;
+        // }
+
+        // echo json_encode(['result' => $data]);
     }
 
 
     function createProduct($pdo, $data)
     {
         try {
-            $req = $pdo->prepare("INSERT INTO products ( name, category_id, parent, price, longtitle, description, alias, published, content, image) 
-                                            VALUES ( :name, :category, :parent, :price, :longtitle, :description, :alias, :published, :content, :image)");
+            $req = $pdo->prepare("INSERT INTO products ( name, parent, price, longtitle, description, alias, published, content, image) 
+                                            VALUES ( :name, :parent, :price, :longtitle, :description, :alias, :published, :content, :image)");
 
 
             // foreach ($data as $key => $value) {
@@ -78,7 +127,7 @@ class ProductsController
     function changeProduct($pdo, $data, $id)
     {
         if ((int)$data['id'] === (int)$id) {
-            $req = $pdo->prepare("UPDATE `products` SET `name`=:name, `price`=:price, `image`=:image, `longtitle`=:longtitle,`description`=:description,`published`=:published,`content`=:content WHERE id=:id");
+            $req = $pdo->prepare("UPDATE `products` SET `name`=:name, `price`=:price, `alias`=:alias, `image`=:image, `longtitle`=:longtitle,`description`=:description,`published`=:published,`content`=:content WHERE id=:id");
             $req->execute($data);
 
             http_response_code(200);

@@ -17,19 +17,20 @@ const App = () => {
     const serverAPI = 'https://tfprint.ru/rest_api_products/rest_api/';
     const [search, setSearch] = useState('');
     const [products, setProducts] = useState([]);
+    const [filtredProducts, setFiltredProducts] = useState([]);
     const [deleteProductObj, setDeleteProduct] = useState({
         "id": -1,
         "name": "Product",
 
     });
-    const [showModal, setShowModal] = useState({ "status": "", "show":false});
+    const [showModal, setShowModal] = useState({ "status": "", "show": false });
     // const [filters, setFilters] = useState([
     //     { id: 1, filter: 'Категория', show: false },
     //     { id: 2, filter: 'Размер', show: false },
     //     { id: 3, filter: 'Намотка', show: false }
     // ]);
     const [desiredCategory, setDesiredCategory] = useState({
-        "id": "1",
+        "id": 1,
         "name": "Все продукты",
 
     });
@@ -37,7 +38,7 @@ const App = () => {
     const [categoriesСrutch, setCrutch] = useState({
         "result":
             [{
-                "id": "1",
+                "id": 1,
                 "0": "1",
                 "name": "Все продукты",
                 "1": "Все продукты",
@@ -45,74 +46,65 @@ const App = () => {
                 "2": "0"
             },
             {
-                "id": "18",
-                "0": "18",
+                "id": 24,
                 "name": "Самоклеящиеся этикетки",
                 "1": "Самоклеящиеся этикетки",
                 "parent_category": "2",
                 "2": "2"
             },
             {
-                "id": "9",
-                "0": "9",
+                "id": 25,
                 "name": "Термоэтикетки",
                 "1": "Термоэтикетки",
                 "parent_category": "2",
                 "2": "2"
             },
             {
-                "id": "19",
-                "0": "19",
+                "id": 48,
                 "name": "Термотрансферные этикетки",
                 "1": "Термотрансферные этикетки",
                 "parent_category": "2",
                 "2": "2"
             },
             {
-                "id": "20",
-                "0": "20",
+                "id": 53,
                 "name": "Синтетические этикетки",
                 "1": "Синтетические этикетки",
                 "parent_category": "2",
                 "2": "2"
             },
             {
-                "id": "10",
-                "0": "10",
+                "id": 39,
                 "name": "Весовые ленты",
                 "1": "Весовые ленты",
                 "parent_category": "2",
                 "2": "2"
             },
             {
-                "id": "14",
-                "0": "14",
+                "id": 197,
                 "name": "Принтеры офисные",
                 "1": "Принтеры офисные",
                 "parent_category": "4",
                 "2": "4"
             },
             {
-                "id": "15",
-                "0": "15",
+                "id": 202,
                 "name": "Принтеры промышленные",
                 "1": "Принтеры промышленные",
                 "parent_category": "4",
                 "2": "4"
             },
             {
-                "id": "16",
-                "0": "16",
+                "id": 205,
                 "name": "Принтеры переносные",
                 "1": "Принтеры переносные",
                 "parent_category": "4",
                 "2": "4"
             },
             {
-                "id": "17",
-                "0": "17",
+                "id": 206,
                 "name": "Принтеры для печати браслетов",
-                "1": "Принтеры для печати браслетов",
+                "1": "Пр17интеры для печати браслетов",
                 "parent_category": "4",
                 "2": "4"
             }],
@@ -163,6 +155,7 @@ const App = () => {
             "name": name
         };
         setDesiredCategory(newDesiredCategory);
+
     };
 
     const onSearch = (event) => {
@@ -180,32 +173,64 @@ const App = () => {
     // };
 
     const searchFilter = (products, str) => {
-        const filtred = products.filter((item) => {
-            if (item.name.indexOf(str) >= 0) {
-                return item;
-            }
-        });
-        return filtred;
+        let count = 0;
+
+        if (str === "") {
+            count++;
+            console.log("search:" + count);
+
+            return products;
+
+        } else {
+            const filtred = products.filter((item) => {
+                if (item.name.indexOf(str) >= 0) {
+                    count++;
+                    return item;
+                }
+    
+    
+            });
+            console.log("search:" + count);
+
+            return filtred;
+
+        }
+
+        
     };
 
     const categoryFilter = (products, desiredCategory) => {
+        let count = 0;
+
         const filtred = products.filter((item) => {
-            if (+item.category_id === +desiredCategory.id) {
+            if (+item.parent === +desiredCategory.id) {
+                count++;
+
                 return item;
+
             }
             if (+desiredCategory.id === 1) {
+                count++;
                 return item;
             }
         });
+        console.log("category:" + count);
+
         return filtred;
     };
 
     const priceFilter = (products, min, max) => {
+        let count = 0;
+
         const filtered = products.filter((item) => {
-            if (item.price >= min && item.price <= max) {
+            if (+item.price >= min && +item.price <= max) {
+                count++;
+
                 return item;
             }
         });
+        console.log("price:" + count);
+
         return filtered;
     }
 
@@ -213,7 +238,7 @@ const App = () => {
         (value) => Math.round(((value - minRange) / (maxRange - minRange)) * 100),
         [minRange, maxRange]
     );
-    const findMax = () => {
+    const findMax = (products) => {
         let max = 0;
         products.forEach(element => {
             if (Number(element.price) > max) {
@@ -221,6 +246,16 @@ const App = () => {
             }
         });
         return max;
+    };
+
+    const findMin = (products, int) => {
+        let min = int
+        products.forEach(element => {
+            if (Number(element.price) < min) {
+                min = Number(element.price);
+            }
+        });
+        return min;
     };
 
     const onGetProducts = (API) => {
@@ -234,15 +269,15 @@ const App = () => {
     };
 
     const onChangeModal = () => {
-        setShowModal({ "status": "change", "show":true});
+        setShowModal({ "status": "change", "show": true });
     };
 
     const onSaveModal = () => {
-        setShowModal({ "status": "save", "show":true});
+        setShowModal({ "status": "save", "show": true });
     };
 
-    const onCloseModal = ( ) => {
-        setShowModal({ "status": "", "show":false});
+    const onCloseModal = () => {
+        setShowModal({ "status": "", "show": false });
 
     };
 
@@ -250,22 +285,26 @@ const App = () => {
         setDeleteProduct({
             "id": id,
             "name": name,
-    
+
         })
-        setShowModal({ "status": "delete", "show":true});
+        setShowModal({ "status": "delete", "show": true });
     };
 
     useEffect(() => {
         onGetProducts(serverAPI);
         // onGetCategories(serverAPI);
+
     }, []);
 
-
     useEffect(() => {
-        const max = findMax();
+        const filtred = categoryFilter(products, desiredCategory);
+        const max = findMax(filtred);
+        const min = findMin(filtred, max);
         setMaxRange(max);
-        setMaxValue(max)
-    }, [products]);
+        setMaxValue(max);
+        setMinValue(min);
+        setMinRange(min);
+    }, [desiredCategory, products]);
 
 
     useEffect(() => {
@@ -275,13 +314,16 @@ const App = () => {
         setWidthRange(maxPercent - minPercent);
     }, [minValue, getPercent, maxValue]);
 
-    const filtredProducts = categoryFilter(priceFilter(searchFilter(products, search), minValue, maxValue), desiredCategory);
+
+    useEffect(() => {
+        setFiltredProducts(searchFilter(priceFilter(categoryFilter(products, desiredCategory), minValue, maxValue), search))
+    }, [desiredCategory, maxValue, minValue, products, search]);
 
     return (
         <div className='grid-global' >
             <header className='header'>
                 <div className='header__toolbar'>
-                    <button className='header__creater-product btn btn-outline-primary ' onClick={onSaveModal}>Создать товар</button>
+                    {/* <button className='header__creater-product btn btn-outline-primary ' onClick={onSaveModal}>Создать товар</button> */}
                 </div>
                 <div className='header__filters'>
                     <Search onSearch={onSearch} />
@@ -312,23 +354,23 @@ const App = () => {
                     showModal={showModal}
                     onCloseModal={onCloseModal}
                     onGetProducts={onGetProducts}
-                    serverAPI={serverAPI} 
-                    onDeleteModal={onDeleteModal}/>
-                    
+                    serverAPI={serverAPI}
+                    onDeleteModal={onDeleteModal} />
+
                 <ProductMaker products={products}
                     showModal={showModal}
                     onCloseModal={onCloseModal}
                     onGetProducts={onGetProducts}
-                    serverAPI={serverAPI} 
-                    categoriesСrutch={categoriesСrutch}/>
-                <DeleteProductModal 
+                    serverAPI={serverAPI}
+                    categoriesСrutch={categoriesСrutch} />
+                <DeleteProductModal
                     showModal={showModal}
                     onCloseModal={onCloseModal}
                     serverAPI={serverAPI}
                     onChangeModal={onChangeModal}
                     deleteProductObj={deleteProductObj}
-                    onGetProducts={onGetProducts}/>
-                
+                    onGetProducts={onGetProducts} />
+
             </main>
         </div>
     );

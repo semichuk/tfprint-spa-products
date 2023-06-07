@@ -9,6 +9,7 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
         [price, setPrice] = useState(-1),
         [longtitle, setLongtitle] = useState(''),
         [description, setDescription] = useState(''),
+        [alias, setAlias] = useState(''),
         [published, setPublished] = useState(-1),
         [img, setImg] = useState(''),
         [listImg, setListImg] = useState([]),
@@ -33,6 +34,7 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
                     } else if (+item.published === 0) {
                         setPublished(false);
                     }
+                    setAlias(item.alias);
                     setImg(item.image);
                     setContent(item.content);
                     setBadge({
@@ -80,11 +82,12 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
             event.preventDefault();
             await updateProduct(serverAPI + "products/" + productId, {
                 "name": name,
-                "price": price,
+                "price": +price,
                 "image": img,
                 "longtitle": longtitle,
-                "id": productId,
+                "id": +productId,
                 "description": description,
+                "alias": alias,
                 "published": published ? 1 : 0,
                 "content": content
             }).then((result) => {
@@ -147,6 +150,10 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
                             <input className='form-control' type='text' value={description} name='description' onChange={(event) => { setDescription(event.target.value) }} />
                         </div>
                         <div className='form-group'>
+                            <label for='formName'>Псевдоним(Латинскими буквами без пробелов)</label>
+                            <input className='form-control' type='text' value={alias} name='description' onChange={(event) => { setAlias(event.target.value) }} />
+                        </div>
+                        <div className='form-group'>
                             <label for='formName'>Опубликованно</label>
                             <input type='checkbox' checked={published} name='published' onChange={onChangePublished} />
                         </div>
@@ -157,7 +164,7 @@ const ProductModal = ({ showModal, onCloseModal, products, productModal, onGetPr
                         <div className='product-modal__status-submit-delete'>
                             <div className={"badge " + badge.class}>{badge.status}</div>
                             <button type="submit" className="btn btn-outline-primary" onClick={onFormSubmit}>Сохранить изменения</button>
-                            <button type="submit" className="btn btn-outline-danger" onClick={onDeleteProduct}>Удалить товар</button>
+                            {/* <button type="submit" className="btn btn-outline-danger" onClick={onDeleteProduct}>Удалить товар</button> */}
 
                         </div>
                     </div>

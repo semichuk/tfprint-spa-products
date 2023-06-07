@@ -7,9 +7,10 @@ const ProductMaker = ({ showModal, onCloseModal, products, onGetProducts, server
     const [productId, setProductId] = useState(-1),
         [name, setName] = useState(''),
         [price, setPrice] = useState(0),
+        [alias, setAlias] = useState(''),
         [longtitle, setLongtitle] = useState(''),
         [description, setDescription] = useState(''),
-        [category, setCategory] = useState(0),
+        [category, setCategory] = useState(24),
         [listCategory, setListCategory] = useState([]),
         [published, setPublished] = useState(false),
         [img, setImg] = useState(''),
@@ -51,6 +52,7 @@ const ProductMaker = ({ showModal, onCloseModal, products, onGetProducts, server
                 <option  key={item.id} value={+item.id}>{item.name}</option>
             )
         });
+        array.shift();
         setListCategory(array);
     }, [categoriesСrutch]);
 
@@ -75,12 +77,11 @@ const ProductMaker = ({ showModal, onCloseModal, products, onGetProducts, server
             event.preventDefault();
             await createProduct(serverAPI + "products", {
                 "name": name,
-                "category": category,
-                "parent":9999,
+                "parent":category,
                 "price": price,
                 "longtitle": longtitle,
                 "description": description,
-                "alias": "alias",
+                "alias": alias,
                 "published": published ? 1 : 0,
                 "content": content,
                 "image": img
@@ -138,6 +139,10 @@ const ProductMaker = ({ showModal, onCloseModal, products, onGetProducts, server
                         <div className='form-group'>
                             <label for='formName'>Описание</label>
                             <input className='form-control' type='text' value={description} name='description' onChange={(event) => { setDescription(event.target.value) }} />
+                        </div>
+                        <div className='form-group'>
+                            <label for='formName'>Псевдоним(Латинскими буквами без пробелов)</label>
+                            <input className='form-control' type='text' value={alias} name='description' onChange={(event) => { setAlias(event.target.value) }} />
                         </div>
                         <div className='form-group'>
                             <label for='formName'>Категория</label>
