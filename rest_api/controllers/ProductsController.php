@@ -7,10 +7,8 @@ class ProductsController
     {
         $data = [];
 
-        $Categoryes = [24, 25, 48, 53, 39, 197, 202, 205, 206];
-        foreach ($Categoryes as $category) {
             ///////////////get other values/////////////
-            $request = $pdo->prepare('SELECT * FROM tfprint_site_content WHERE parent = :parent  AND is_product = 1');
+            $request = $pdo->prepare('SELECT * FROM products');
             $request->execute([
                 'parent' => $category
             ]);
@@ -47,7 +45,6 @@ class ProductsController
                 $array['image'] = $image;
                 $data[] = $array;
             }
-        }
         echo json_encode(['result' => $data]);
     }
 
@@ -55,7 +52,7 @@ class ProductsController
     function createProduct($pdo, $data)
     {
         try {
-            $req = $pdo->prepare("INSERT INTO tfprint_site_content ( pagetitle, parent, price, longtitle, description, alias, published, content, image) 
+            $req = $pdo->prepare("INSERT INTO products ( pagetitle, parent, price, longtitle, description, alias, published, content, image) 
                                             VALUES ( :name, :parent, :price, :longtitle, :description, :alias, :published, :content, :image)");
             $req->execute($data);
 
@@ -112,7 +109,7 @@ class ProductsController
 
                 $pdo->beginTransaction();
 
-                $req = $pdo->prepare("UPDATE tfprint_site_content SET pagetitle =:name, alias=:alias, longtitle=:longtitle, description=:description, published=:published, content=:content WHERE id=:id");
+                $req = $pdo->prepare("UPDATE products SET pagetitle =:name, alias=:alias, longtitle=:longtitle, description=:description, published=:published, content=:content WHERE id=:id");
                 $req->execute([
                     "name"=>$data['name'],
                     "alias"=>$data['alias'],
