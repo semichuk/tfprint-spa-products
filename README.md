@@ -1,6 +1,6 @@
 # Панель администратора на React.js
 
-Данный проект был разработан для сайта https://www.tfprint.ru/
+Данный проект был разработан для сайта https://www.tfprint.ru/ .
 
 Это приложение решает задачу администрирования товаров на сайте.
 
@@ -8,11 +8,14 @@
 
 Примеры работы программы на фото:
 
-Работа фильтров:
+Стартовый вид:
 ![preview](https://github.com/semichuk/tfprint-spa-products/raw/main/preview/4.png)
+По умолчанию показываются все товары без фильтров.
+
 
 ![preview](https://github.com/semichuk/tfprint-spa-products/raw/main/preview/2.png)
 
 ![preview](https://github.com/semichuk/tfprint-spa-products/raw/main/preview/3.png)
 
+Работа фильтров:
 ![preview](https://github.com/semichuk/tfprint-spa-products/raw/main/preview/1.png)
