@@ -8,4 +8,11 @@
 
 Примеры работы программы на фото:
 
+Работа фильтров:
+![preview](https://github.com/semichuk/tfprint-spa-products/raw/main/preview/4.png)
+
+![preview](https://github.com/semichuk/tfprint-spa-products/raw/main/preview/2.png)
+
+![preview](https://github.com/semichuk/tfprint-spa-products/raw/main/preview/3.png)
+
 ![preview](https://github.com/semichuk/tfprint-spa-products/raw/main/preview/1.png)
