@@ -22,5 +22,6 @@
 
 Работа фильтров:
 ![preview](https://github.com/semichuk/tfprint-spa-products/raw/main/preview/1.png)
+Здесь показана работа поиска товаров по наименованию и цене, так же можно фильтровать товары по категориям.
 
 
