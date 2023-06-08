@@ -8,4 +8,4 @@
 
 Примеры работы программы на фото:
 
-![Image alt](https://github.com/{username}/{repository}/raw/{branch}/{path}/image.png)
+![preview](https://github.com/semichuk/tfprint-spa-products/raw/main/preview/1.png)
