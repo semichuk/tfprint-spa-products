@@ -14,7 +14,7 @@ import './App.scss';
 import { useState, useCallback, useEffect } from 'react';
 
 const App = () => {
-    const serverAPI = 'https://tfprint.ru/rest_api_products/rest_api/';
+    const serverAPI = '';//Здесь должен быть url, на который будут производиться запросы
     const [search, setSearch] = useState('');
     const [products, setProducts] = useState([]);
     const [filtredProducts, setFiltredProducts] = useState([]);
@@ -24,93 +24,14 @@ const App = () => {
 
     });
     const [showModal, setShowModal] = useState({ "status": "", "show": false });
-    // const [filters, setFilters] = useState([
-    //     { id: 1, filter: 'Категория', show: false },
-    //     { id: 2, filter: 'Размер', show: false },
-    //     { id: 3, filter: 'Намотка', show: false }
-    // ]);
+  
     const [desiredCategory, setDesiredCategory] = useState({
         "id": 1,
         "name": "Все продукты",
 
     });
     const [productModal, setProductModal] = useState(-1);
-    const [categoriesСrutch, setCrutch] = useState({
-        "result":
-            [{
-                "id": 1,
-                "0": "1",
-                "name": "Все продукты",
-                "1": "Все продукты",
-                "parent_category": "0",
-                "2": "0"
-            },
-            {
-                "id": 24,
-                "name": "Самоклеящиеся этикетки",
-                "1": "Самоклеящиеся этикетки",
-                "parent_category": "2",
-                "2": "2"
-            },
-            {
-                "id": 25,
-                "name": "Термоэтикетки",
-                "1": "Термоэтикетки",
-                "parent_category": "2",
-                "2": "2"
-            },
-            {
-                "id": 48,
-                "name": "Термотрансферные этикетки",
-                "1": "Термотрансферные этикетки",
-                "parent_category": "2",
-                "2": "2"
-            },
-            {
-                "id": 53,
-                "name": "Синтетические этикетки",
-                "1": "Синтетические этикетки",
-                "parent_category": "2",
-                "2": "2"
-            },
-            {
-                "id": 39,
-                "name": "Весовые ленты",
-                "1": "Весовые ленты",
-                "parent_category": "2",
-                "2": "2"
-            },
-            {
-                "id": 197,
-                "name": "Принтеры офисные",
-                "1": "Принтеры офисные",
-                "parent_category": "4",
-                "2": "4"
-            },
-            {
-                "id": 202,
-                "name": "Принтеры промышленные",
-                "1": "Принтеры промышленные",
-                "parent_category": "4",
-                "2": "4"
-            },
-            {
-                "id": 205,
-                "name": "Принтеры переносные",
-                "1": "Принтеры переносные",
-                "parent_category": "4",
-                "2": "4"
-            },
-            {
-                "id": 206,
-                "name": "Принтеры для печати браслетов",
-                "1": "Пр17интеры для печати браслетов",
-                "parent_category": "4",
-                "2": "4"
-            }],
-        "show": false
-    })
-    // const [categories, setCategories] = useState([]);
+    
     const [minRange, setMinRange] = useState(0);
     const [maxRange, setMaxRange] = useState(0);
     const [minValue, setMinValue] = useState(0);
@@ -129,17 +50,6 @@ const App = () => {
         setMaxValue(value);
     };
 
-    // const onFilter = (id) => {
-    //     const newFilters = filters.map((filter) => {
-    //         if (filter.id === id) {
-    //             filter.show = !filter.show;
-    //         } else {
-    //             filter.show = false;
-    //         }
-    //         return filter;
-    //     });
-    //     setFilters(newFilters);
-    // };
 
     const onShowCategories = () => {
         const newCategories = { ...categoriesСrutch };
@@ -162,15 +72,7 @@ const App = () => {
         setSearch(event.target.value);
     }
 
-    // const onGetCategories = (API) => {
-    //     getProducts(API + 'categories')
-    //         .then((data) => {
-    //             setCategories(data.result);
-    //         }).catch((e) => {
-
-    //             console.log("error" + e);
-    //         });
-    // };
+   
 
     const searchFilter = (products, str) => {
         let count = 0;
